@@ -19,19 +19,45 @@ function SearchBar() {
 
 function ProductCategoryRow(props) {
     return (
-      <div>
-        {props.category}
-      </div>
+      <tr>
+        <td>
+          <strong>{props.category}</strong>
+        </td>
+      </tr>
+    )
+}
+
+function ProductRow(props) {
+    return (
+      <tr>
+        <td>{props.name}</td>
+        <td>{props.price}</td>
+      </tr>
     )
 }
 
 function ProductTable() {
   var currentCategory = null
   var productArray = products.map((product) => {
-    console.log(product.category)
-    return <ProductCategoryRow category={product.category}/>
+    var temp = []
+    if(product.category !== currentCategory) {
+      currentCategory = product.category
+      temp.push(<ProductCategoryRow category={product.category} />)
+    }
+    temp.push(<ProductRow name={product.name} price={product.price} />)
+    return temp
   })
-  return <div>{productArray}</div>
+  return (
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+      </tr>
+      <tbody>
+        {[].concat.apply([], productArray)}
+      </tbody>
+    </table>
+  )
 }
 
 class FilterableProductTable extends React.Component {
