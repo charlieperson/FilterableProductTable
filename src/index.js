@@ -11,29 +11,35 @@ var products = [
   {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
 ];
 
-class SearchBar extends React.Component {
-  render() {
+function SearchBar() {
+  return (
+    <input type="text"></input>
+  )
+}
+
+function ProductCategoryRow(props) {
     return (
-      <input type="text"></input>
+      <div>
+        {props.category}
+      </div>
     )
-  }
 }
 
-class ProductCategoryRow extends React.Component {
-  render() {
-    return {
-
-    }
-  }
+function ProductTable() {
+  var currentCategory = null
+  var productArray = products.map((product) => {
+    console.log(product.category)
+    return <ProductCategoryRow category={product.category}/>
+  })
+  return <div>{productArray}</div>
 }
-
-
 
 class FilterableProductTable extends React.Component {
   render() {
     return (
       <div>
         <SearchBar />
+        <ProductTable />
       </div>
     );
   }
