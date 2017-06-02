@@ -13,48 +13,54 @@ var products = [
 
 function SearchBar() {
   return (
-    <input type="text"></input>
+    <form>
+      <input type="text" placeholder="Search..." />
+      <p>
+        <input type="checkbox" />
+        {' '}
+        Only show products in stock
+      </p>
+    </form>
   )
 }
 
 function ProductCategoryRow(props) {
     return (
-      <tr>
-        <td>
-          <strong>{props.category}</strong>
-        </td>
-      </tr>
+      <tr><th>{props.category}</th></tr>
     )
 }
 
 function ProductRow(props) {
+    var name = props.product.stocked ? props.product.name :
+                                       <span style={{color: "red"}}>{props.product.name}</span>
     return (
       <tr>
-        <td>{props.name}</td>
-        <td>{props.price}</td>
+        <td>{name}</td>
+        <td>{props.product.price}</td>
       </tr>
     )
 }
 
 function ProductTable() {
   var currentCategory = null
-  var productArray = products.map((product) => {
-    var temp = []
+  var rows = []
+  var productArray = products.forEach((product) => {
     if(product.category !== currentCategory) {
       currentCategory = product.category
-      temp.push(<ProductCategoryRow category={product.category} />)
+      rows.push(<ProductCategoryRow key={product.category} category={product.category} />)
     }
-    temp.push(<ProductRow name={product.name} price={product.price} />)
-    return temp
+    rows.push(<ProductRow product={product} key={product.name} />)
   })
   return (
     <table>
+      <thead>
       <tr>
         <th>Name</th>
         <th>Price</th>
       </tr>
+    </thead>
       <tbody>
-        {[].concat.apply([], productArray)}
+        {rows}
       </tbody>
     </table>
   )
