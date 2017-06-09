@@ -11,17 +11,19 @@ var products = [
   {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
 ];
 
-function SearchBar() {
-  return (
-    <form>
-      <input type="text" placeholder="Search..." />
-      <p>
-        <input type="checkbox" />
-        {' '}
-        Only show products in stock
-      </p>
-    </form>
-  )
+class SearchBar extends React.Component {
+  render() {
+    return (
+      <form>
+        <input type="text" placeholder="Search..." value={this.props.filterText}/>
+        <p>
+          <input type="checkbox" />
+          {' '}
+          Only show products in stock
+        </p>
+      </form>
+    )
+  }
 }
 
 function ProductCategoryRow(props) {
@@ -43,7 +45,6 @@ function ProductRow(props) {
 
 class ProductTable extends React.Component {
   render() {
-
     var currentCategory = null
     var rows = []
     var productArray = products.forEach((product) => {
