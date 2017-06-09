@@ -41,43 +41,51 @@ function ProductRow(props) {
     )
 }
 
-function ProductTable() {
-  var currentCategory = null
-  var rows = []
-  var productArray = products.forEach((product) => {
-    if(product.category !== currentCategory) {
-      currentCategory = product.category
-      rows.push(<ProductCategoryRow key={product.category} category={product.category} />)
-    }
-    rows.push(<ProductRow product={product} key={product.name} />)
-  })
-  return (
-    <table>
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-      <tbody>
-        {rows}
-      </tbody>
-    </table>
-  )
+class ProductTable extends React.Component {
+  render() {
+
+    var currentCategory = null
+    var rows = []
+    var productArray = products.forEach((product) => {
+      if(!product.stocked && this.props.inStockOnly || this.props.filterText.indexOf(product.name) === -1) { return }
+
+      if(product.category !== currentCategory) {
+        currentCategory = product.category
+        rows.push(<ProductCategoryRow key={product.category} category={product.category} />)
+      }
+      rows.push(<ProductRow product={product} key={product.name} />)
+    })
+    return (
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    )
+  }
 }
 
 class FilterableProductTable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {filterText: 'Basketball', inStockOnly: false}
+  }
+
   render() {
     return (
       <div>
-        <SearchBar />
-        <ProductTable />
+        <SearchBar filterText={this.state.filterText} inStockOnly={this.state.inStockOnly} />
+        <ProductTable filterText={this.state.filterText} inStockOnly={this.state.inStockOnly} />
       </div>
     );
   }
 }
-
-
 
 // ========================================
 
